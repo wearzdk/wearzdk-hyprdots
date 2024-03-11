@@ -76,17 +76,6 @@ hyprctl reload
 source "${ScrDir}/globalcontrol.sh"
 
 
-# code
-if [ ! -z "$(grep '^1|' "$ThemeCtl" | awk -F '|' '{print $3}')" ] ; then
-    codex=$(grep '^1|' "$ThemeCtl" | awk -F '|' '{print $3}' | cut -d '~' -f 1)
-    if [ $(code --list-extensions |  grep -iwc "${codex}") -eq 0 ] ; then
-        code --install-extension "${codex}" 2> /dev/null
-    fi
-    codet=$(grep '^1|' "$ThemeCtl" | awk -F '|' '{print $3}' | cut -d '~' -f 2)
-    jq --arg codet "${codet}" '.["workbench.colorTheme"] |= $codet' "$ConfDir/Code/User/settings.json" > tmpvsc && mv tmpvsc "$ConfDir/Code/User/settings.json"
-fi
-
-
 # gtk3
 sed -i "/^gtk-theme-name=/c\gtk-theme-name=${ThemeSet}" $ConfDir/gtk-3.0/settings.ini
 sed -i "/^gtk-icon-theme-name=/c\gtk-icon-theme-name=${gtkIcon}" $ConfDir/gtk-3.0/settings.ini
